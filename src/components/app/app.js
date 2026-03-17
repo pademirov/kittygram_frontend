@@ -14,6 +14,9 @@ import { MainPage } from "../main-page/main-page";
 import { CardPage } from "../card-page/card-page";
 import { AddCardPage } from "../add-card-page/add-card-page";
 import { EditCardPage } from "../edit-card-page/edit-card-page";
+import { MyLikesPage } from "../favorites/favorites";
+import { MyCatsPage } from "../my-cats-page/my-cats-page";
+
 
 import styles from "./app.module.css";
 
@@ -27,7 +30,7 @@ function App() {
     if (token) {
       getUser().then((res) => {
         if (res && res.id) {
-          setUserState({ id: res.id });
+          setUserState({ id: res.id, username: res.username });
         }
       });
     }
@@ -42,6 +45,12 @@ function App() {
             <Switch>
               <ProtectedRoute exact path="/">
                 <MainPage queryPage={queryPage} setQueryPage={setQueryPage} />
+              </ProtectedRoute>
+              <ProtectedRoute exact path="/my-likes">
+                <MyLikesPage />
+              </ProtectedRoute>
+              <ProtectedRoute exact path="/my-cats">
+                <MyCatsPage />
               </ProtectedRoute>
               <Route path="/signin">
                 <SignIn />

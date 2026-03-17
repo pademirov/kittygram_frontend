@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
 
-import { deleteCard, getCard } from "../../utils/api";
+import { deleteCard, getCard, likeCard } from "../../utils/api";
 import { UserContext } from "../../utils/context";
 
 import returnIcon from "../../images/left.svg";
@@ -16,6 +16,9 @@ import styles from "./card-page.module.css";
 
 export const CardPage = ({ data, setData, extraClass = "" }) => {
   const [achievements, setAchievements] = React.useState("");
+  const [likesCount, setLikesCount] = React.useState(0);
+  const [likedBy, setLikedBy] = React.useState([]);
+  const [liked, setLiked] = React.useState(false);
   const [user] = React.useContext(UserContext);
 
   const history = useHistory();
@@ -33,6 +36,9 @@ export const CardPage = ({ data, setData, extraClass = "" }) => {
             : (resString = item.achievement_name);
         });
         setAchievements(resString);
+        setLikesCount(res.likes_count);
+        setLikedBy(res.liked_by);
+        setLiked(res.liked_by?.some(l => l.username === user.username));
       }
     });
   }, [params.id, setData]);
@@ -52,6 +58,20 @@ export const CardPage = ({ data, setData, extraClass = "" }) => {
       .catch((err) => {
         console.log(err.message);
       });
+  };
+
+  const handleLike = () => {
+    likeCard(data.id).then((res) => {
+      if (res.detail === 'Лайк поставлен.') {
+        setLikesCount(likesCount + 1);
+        setLikedBy([...likedBy, { username: user.username }]);
+        setLiked(true);
+      } else {
+        setLikesCount(likesCount - 1);
+        setLikedBy(likedBy.filter(item => item.username !== user.username));
+        setLiked(false);
+      }
+    });
   };
 
   const colorText =
@@ -134,6 +154,14 @@ export const CardPage = ({ data, setData, extraClass = "" }) => {
       <p className={`text text_type_h3 ${styles.achievements}`}>
         {achievements}
       </p>
+      <button onClick={handleLike} className={liked ? styles.like_btn : styles.like_btn_inactive}>
+        {liked ? '❤️' : '🤍'} {likesCount}
+      </button>
+      {likedBy && likedBy.length > 0 && (
+        <p className={`text text_type_medium-20 text_color_secondary ${styles.liked_by}`}>
+          ❤️ {likedBy.map(item => item.username).join(', ')}
+        </p>
+      )}
     </article>
   );
 };

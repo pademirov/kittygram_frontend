@@ -10,6 +10,7 @@ import logoutIcon from "../../images/logout.svg";
 import logo from "../../images/logo.svg";
 
 import { ButtonHeader } from "../ui/button-header/button-header";
+import { ButtonFavorite } from "../ui/button-favorite/button-favorite";
 import { ButtonSecondary } from "../ui/button-secondary/button-secondary";
 
 import styles from "./header.module.css";
@@ -44,6 +45,17 @@ export const Header = ({ setQueryPage, extraClass = "" }) => {
         <ButtonHeader to="/signin" text="Войти" icon={loginIcon} />
       ) : (
         <div className={styles.btns_box}>
+          <ButtonFavorite
+            to="/my-likes"
+            text="❤️ Избранное"
+            isLogin={true}
+          />
+          <ButtonFavorite
+            to="/my-cats"
+            text="Мои коты"
+            icon={plusIcon}
+            isLogin={true}
+          />
           <ButtonHeader
             to="/cats/add"
             text="Добавить кота"

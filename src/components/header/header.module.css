@@ -15,7 +15,7 @@
 .btns_box {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 20px;
 }
 
 .hidden {
@@ -24,11 +24,11 @@
 
 @media screen and (max-width: 900px) {
   .header {
-    padding: 15px 40px;
+    padding: 12px 20px;
   }
 
   .btns_box {
-    gap: 20px;
+    gap: 10px;
   }
 }
 

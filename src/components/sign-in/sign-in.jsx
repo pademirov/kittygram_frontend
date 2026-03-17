@@ -49,7 +49,7 @@ export const SignIn = ({ extraClass = "" }) => {
           if (res && res.auth_token) {
             getUser().then((res) => {
               if (res && res.id) {
-                setUser({ id: res.id });
+                setUser({ id: res.id, username: res.username });
                 history.replace({ pathname: "/" });
               }
             });

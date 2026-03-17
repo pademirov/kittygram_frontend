@@ -1,0 +1,45 @@
+.button {
+    border: 2px solid var(--btn-bgc);
+    outline: none;
+    transition: var(--common-transition);
+    background: none;
+    padding: 10px;
+    border-radius: var(--button-border-radius);
+    text-align: center;
+    background-color: white;
+    color: var(--btn-bgc);
+    display: flex;
+    align-items: center;
+    max-height: 40px;
+    text-decoration: none;
+  }
+  
+  .button:disabled {
+    opacity: 0.4;
+  }
+  
+  .button:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+  
+  .hidden {
+    display: block;
+  }
+  
+  .none {
+    display: none;
+  }
+  
+  .text {
+    padding-right: 11px;
+  }
+  
+  @media screen and (max-width: 630px) {
+    .button {
+      padding: 0px;
+      margin: 0;
+      border: none;
+    }
+  }
+  
