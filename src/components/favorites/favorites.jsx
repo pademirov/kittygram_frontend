@@ -1,5 +1,5 @@
 import React from "react";
-import { getMyLikes } from "../../utils/api";
+import { getFavorites } from "../../utils/api";
 import { MainCard } from "../main-card/main-card";
 import { PaginationBox } from "../pagination-box/pagination-box";
 import styles from "./favorites.module.css";
@@ -10,7 +10,7 @@ export const MyLikesPage = ({ extraClass = "" }) => {
   const [queryPage, setQueryPage] = React.useState(1);
 
   React.useEffect(() => {
-    getMyLikes(queryPage).then((res) => {
+    getFavorites(queryPage).then((res) => {
       if (res.results) {
         setPagData({
           count: res.count,
@@ -21,7 +21,7 @@ export const MyLikesPage = ({ extraClass = "" }) => {
     })
     .catch((err) => {
       if (err.detail === "Invalid page.") {
-        getMyLikes(queryPage - 1)
+        getFavorites(queryPage - 1)
           .then((res) => {
             setQueryPage(queryPage - 1);
             setPagData({
@@ -39,10 +39,9 @@ export const MyLikesPage = ({ extraClass = "" }) => {
     });
   }, [queryPage]);
 
-  const handleUnlike = (cardId) => {
+  const handleUnfavorite = (cardId) => {
     const newCards = cards.filter(card => card.id !== cardId);
     setCards(newCards);
-    
     if (newCards.length === 0 && queryPage > 1) {
       setQueryPage(queryPage - 1);
     } else {
@@ -62,10 +61,10 @@ export const MyLikesPage = ({ extraClass = "" }) => {
       <div className={styles.box}>
         {cards.length === 0 && (
           <p className="text text_type_h3 text_color_secondary">
-            Вы ещё не лайкнули ни одного кота
+            Вы ещё не добавили в избранное ни одного кота
           </p>
         )}
-        {cards.map((item, index) => (
+        {cards.map((item) => (
           <MainCard
             cardId={item.id}
             key={item.id}
@@ -74,8 +73,8 @@ export const MyLikesPage = ({ extraClass = "" }) => {
             date={item.birth_year}
             color={item.color}
             likesCount={item.likes_count}
-            onUnlike={handleUnlike}
             likedBy={item.liked_by || []}
+            onUnfavorite={handleUnfavorite}
           />
         ))}
       </div>

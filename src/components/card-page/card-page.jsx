@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
 
-import { deleteCard, getCard, likeCard } from "../../utils/api";
+import { deleteCard, getCard, likeCard, favoriteCard  } from "../../utils/api";
 import { UserContext } from "../../utils/context";
 
 import returnIcon from "../../images/left.svg";
@@ -20,6 +20,7 @@ export const CardPage = ({ data, setData, extraClass = "" }) => {
   const [likedBy, setLikedBy] = React.useState([]);
   const [liked, setLiked] = React.useState(false);
   const [user] = React.useContext(UserContext);
+  const [favorite, setFavorite] = React.useState(false);
 
   const history = useHistory();
   const params = useParams();
@@ -39,6 +40,7 @@ export const CardPage = ({ data, setData, extraClass = "" }) => {
         setLikesCount(res.likes_count);
         setLikedBy(res.liked_by);
         setLiked(res.liked_by?.some(l => l.username === user.username));
+        setFavorite(res.is_favorite);
       }
     });
   }, [params.id, setData]);
@@ -74,6 +76,16 @@ export const CardPage = ({ data, setData, extraClass = "" }) => {
     });
   };
 
+  const handleFavorite = () => {
+    favoriteCard(data.id).then((res) => {
+      if (res.detail === 'Добавлено в избранное.') {
+        setFavorite(true);
+      } else {
+        setFavorite(false);
+      }
+    });
+  };
+
   const colorText =
     data.color === "black" ||
     data.color === "saddlebrown" ||
@@ -84,7 +96,14 @@ export const CardPage = ({ data, setData, extraClass = "" }) => {
 
   return (
     <article className={`${styles.content} ${extraClass}`}>
+      <button
+        onClick={handleFavorite}
+        className={favorite ? styles.favorite_btn : styles.favorite_btn_inactive}
+      >
+        {favorite ? '⭐ В избранном' : '📌 В избранное'}
+      </button>
       <div className={styles.container}>
+        
         <div className={styles.btns_box_mobile}>
           <ButtonSecondary
             extraClass={styles.mobile_btn}

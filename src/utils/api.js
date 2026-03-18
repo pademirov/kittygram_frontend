@@ -137,8 +137,8 @@ export const likeCard = (id) => {
   }).then(checkResponse);
 };
 
-export const getMyLikes = (page = 1) => {
-  return fetch(`${URL}/api/cats/my_likes/?page=${page}`, {
+export const getFavorites = (page = 1) => {
+  return fetch(`${URL}/api/cats/favorites/?page=${page}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -150,6 +150,16 @@ export const getMyLikes = (page = 1) => {
 export const getMyCats = (page = 1) => {
   return fetch(`${URL}/api/cats/my_cats/?page=${page}`, {
     method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Token ${localStorage.getItem("auth_token")}`,
+    },
+  }).then(checkResponse);
+};
+
+export const favoriteCard = (id) => {
+  return fetch(`${URL}/api/cats/${id}/favorite/`, {
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
       authorization: `Token ${localStorage.getItem("auth_token")}`,
